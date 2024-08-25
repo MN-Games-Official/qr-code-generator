@@ -55,27 +55,25 @@
             const qrCodeContainer = document.getElementById('qr-code');
             qrCodeContainer.innerHTML = '';
 
-            // Create QR code
-            const qrcode = new QRCode(qrCodeContainer, {
+            // Create a canvas element to draw the QR code
+            const canvas = document.createElement('canvas');
+            qrCodeContainer.appendChild(canvas);
+            
+            // Generate QR code as a canvas element
+            const qrcode = new QRCode(canvas, {
                 text: url,
                 width: 256,
                 height: 256,
-                colorDark : "#000000",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
             });
-      // Add image to center of QR code
-            const qrCodeImg = qrCodeContainer.querySelector('img');
-            const qrCodeCanvas = qrCodeImg ? qrCodeImg : qrCodeContainer.querySelector('canvas');
-            const qrCodeImage = new Image();
             qrCodeImage.src = 'https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1724544000&semt=ais_hybrid'; // Replace with your image path
-
-
             qrCodeImage.onload = function() {
-                const ctx = qrCodeCanvas.getContext('2d');
+                const ctx = canvas.getContext('2d');
                 const size = 40; // Image size
-                const x = (qrCodeCanvas.width / 2) - (size / 2);
-                const y = (qrCodeCanvas.height / 2) - (size / 2);
+                const x = (canvas.width / 2) - (size / 2);
+                const y = (canvas.height / 2) - (size / 2);
 
                 ctx.drawImage(qrCodeImage, x, y, size, size);
             };
