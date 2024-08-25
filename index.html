@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Generator</title>
+    <title>QR Code Generator with Logo</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,7 +19,7 @@
             flex-direction: column;
             align-items: center;
         }
-        #qr-code {
+        #canvas {
             margin: 20px;
         }
         input[type="text"] {
@@ -37,46 +37,48 @@
 </head>
 <body>
     <div id="qr-container">
-        <h1>QR Code Generator</h1>
+        <h1>QR Code Generator with Logo</h1>
         <input type="text" id="url-input" placeholder="Enter URL here" />
+        <input type="text" id="logo-input" placeholder="Enter Logo URL here" />
         <button onclick="generateQRCode()">Generate QR Code</button>
-        <div id="qr-code"></div>
+        <div id="canvas"></div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script>
+    <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <script type="text/javascript">
         function generateQRCode() {
             const url = document.getElementById('url-input').value;
-            if (!url) {
-                alert('Please enter a URL');
+            const logoUrl = document.getElementById('logo-input').value;
+            if (!url || !logoUrl) {
+                alert('Please enter both a URL and a logo URL');
                 return;
             }
             
             // Clear any existing QR code
-            const qrCodeContainer = document.getElementById('qr-code');
-            qrCodeContainer.innerHTML = '';
+            const canvasContainer = document.getElementById('canvas');
+            canvasContainer.innerHTML = '';
 
-            // Create a canvas element to draw the QR code
-            const canvas = document.createElement('canvas');
-            qrCodeContainer.appendChild(canvas);
-            
-            // Generate QR code as a canvas element
-            const qrcode = new QRCode(canvas, {
-                text: url,
-                width: 256,
-                height: 256,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
+            // Create a new QR code
+            const qrCode = new QRCodeStyling({
+                width: 300,
+                height: 300,
+                type: "svg",
+                data: url,
+                image: logoUrl,
+                dotsOptions: {
+                    color: "#000000",
+                    type: "rounded"
+                },
+                backgroundOptions: {
+                    color: "#ffffff",
+                },
+                imageOptions: {
+                    crossOrigin: "anonymous",
+                    margin: 20
+                }
             });
-            qrCodeImage.src = 'https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1724544000&semt=ais_hybrid'; // Replace with your image path
-            qrCodeImage.onload = function() {
-                const ctx = canvas.getContext('2d');
-                const size = 40; // Image size
-                const x = (canvas.width / 2) - (size / 2);
-                const y = (canvas.height / 2) - (size / 2);
 
-                ctx.drawImage(qrCodeImage, x, y, size, size);
-            };
+            // Append the QR code to the canvas container
+            qrCode.append(canvasContainer);
         }
     </script>
 </body>
