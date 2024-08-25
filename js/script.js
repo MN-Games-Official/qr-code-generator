@@ -10,7 +10,7 @@ const onGenerateSubmit = (e) => {
   const url = document.getElementById("url").value;
   const size = document.getElementById("size").value;
 
-  // Validate url
+  // Validate URL
   if (url === "") {
     alert("Please enter a URL");
   } else {
@@ -19,10 +19,10 @@ const onGenerateSubmit = (e) => {
     setTimeout(() => {
       hideSpinner();
       generateQRCode(url, size);
-      showScanner();
-      // Generate the save button after the qr code image src is ready
+      showScanner(); // Show QR code container
+      // Generate the save button after the QR code image src is ready
       setTimeout(() => {
-        // Get save url
+        // Get save URL
         const saveUrl = qr.querySelector("canvas").toDataURL();
         // Create save button
         createSaveBtn(saveUrl);
@@ -74,22 +74,28 @@ const clearUI = () => {
   }
 };
 
-// Hide scanner
+// Show QR code container
 const showScanner = () => {
   const scanner = document.getElementById("qrCodeContainer");
-  scanner.style.display = "block";
+  if (scanner) {
+    scanner.style.display = "block";
+  }
 };
 
 // Show spinner
 const showSpinner = () => {
   const spinner = document.getElementById("spinner");
-  spinner.style.display = "block";
+  if (spinner) {
+    spinner.style.display = "block";
+  }
 };
 
 // Hide spinner
 const hideSpinner = () => {
   const spinner = document.getElementById("spinner");
-  spinner.style.display = "none";
+  if (spinner) {
+    spinner.style.display = "none";
+  }
 };
 
 // Create save button to download QR code as image
