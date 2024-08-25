@@ -42,7 +42,7 @@
         <button onclick="generateQRCode()">Generate QR Code</button>
         <div id="qr-code"></div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs2@0.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
         function generateQRCode() {
             const url = document.getElementById('url-input').value;
@@ -56,7 +56,7 @@
             qrCodeContainer.innerHTML = '';
 
             // Create QR code
-            const qrCode = new QRCode(qrCodeContainer, {
+            const qrcode = new QRCode(qrCodeContainer, {
                 text: url,
                 width: 256,
                 height: 256,
@@ -64,13 +64,12 @@
                 colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.H
             });
-
-            // Add image to center of QR code
+      // Add image to center of QR code
             const qrCodeImg = qrCodeContainer.querySelector('img');
             const qrCodeCanvas = qrCodeImg ? qrCodeImg : qrCodeContainer.querySelector('canvas');
-
             const qrCodeImage = new Image();
             qrCodeImage.src = 'https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1724544000&semt=ais_hybrid'; // Replace with your image path
+
 
             qrCodeImage.onload = function() {
                 const ctx = qrCodeCanvas.getContext('2d');
