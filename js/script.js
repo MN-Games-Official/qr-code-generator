@@ -31,36 +31,38 @@ const onGenerateSubmit = (e) => {
   }
 };
 
-// Generate QR code with branding
+// Generate QR code
 const generateQRCode = (url, size) => {
   const qrcode = new QRCode("qrcode", {
     text: url,
     width: size,
     height: size,
-    colorDark: "#000000",
-    colorLight: "#ffffff",
-    correctLevel: QRCode.CorrectLevel.H,
-    render: 'canvas'
+    callback: (error) => {
+      if (error) console.error(error);
+      else overlayText(); // Call overlayText after QR code is generated
+    },
   });
+};
 
-  // Wait for QR code to be generated and then overlay branding
-  setTimeout(() => {
-    const canvas = document.querySelector("#qrcode canvas");
-    if (canvas) {
-      const context = canvas.getContext("2d");
-      const qrSize = canvas.width;
-      const brandingSize = qrSize / 6; // Adjust size of branding text as needed
+// Overlay text on the QR code
+const overlayText = () => {
+  const canvas = qr.querySelector("canvas");
+  if (!canvas) return;
+  
+  const ctx = canvas.getContext("2d");
+  const text = "IdlePOS";
 
-      // Draw branding text
-      context.fillStyle = "#000000"; // Branding color
-      context.font = `${brandingSize / 2}px Arial`;
-      context.textAlign = "center";
-      context.textBaseline = "middle";
+  // Set font size and style
+  ctx.font = "bold 20px Arial";
+  ctx.fillStyle = "#000000"; // Text color
 
-      // Position the branding text in the center of the QR code
-      context.fillText("IdlePOS", qrSize / 2, qrSize / 2);
-    }
-  }, 100);
+  // Calculate text position to center it
+  const textWidth = ctx.measureText(text).width;
+  const x = (canvas.width - textWidth) / 2;
+  const y = canvas.height - 10; // 10px from the bottom
+
+  // Draw text on canvas
+  ctx.fillText(text, x, y);
 };
 
 // Clear QR code and save button
@@ -72,7 +74,7 @@ const clearUI = () => {
   }
 };
 
-// Show scanner
+// Hide scanner
 const showScanner = () => {
   const scanner = document.getElementById("qrCodeContainer");
   scanner.style.display = "block";
@@ -94,7 +96,8 @@ const hideSpinner = () => {
 const createSaveBtn = (saveUrl) => {
   const link = document.createElement("a");
   link.id = "save-link";
-  link.classList = 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 rounded w-1/3 m-auto my-5';
+  link.classList =
+    'bg-red-500 hover:bg-red-700 text-white font-bold py-2 rounded w-1/3 m-auto my-5';
   link.innerHTML = "Save Image";
 
   link.href = saveUrl;
