@@ -57,10 +57,10 @@
             const canvasContainer = document.getElementById('canvas');
             canvasContainer.innerHTML = '';
 
-            // Create a new QR code
+          // Create a new QR code with a larger logo
             const qrCode = new QRCodeStyling({
-                width: 300,
-                height: 300,
+                width: 500,
+                height: 500,
                 type: "svg",
                 data: url,
                 image: logoUrl,
@@ -73,10 +73,11 @@
                 },
                 imageOptions: {
                     crossOrigin: "anonymous",
-                    margin: 20
+                    margin: 20,
+                    // Adjust the size of the logo
+                    imageSize: 0.4 // Size of the logo as a percentage of QR code width
                 }
             });
-
             // Append the QR code to the canvas container
             qrCode.append(canvasContainer);
         }
