@@ -46,18 +46,20 @@ const generateQRCode = (url, size) => {
   // Wait for QR code to be generated and then overlay branding
   setTimeout(() => {
     const canvas = document.querySelector("#qrcode canvas");
-    const context = canvas.getContext("2d");
-    const qrSize = canvas.width;
-    const brandingSize = qrSize / 6; // Adjust size of branding text as needed
+    if (canvas) {
+      const context = canvas.getContext("2d");
+      const qrSize = canvas.width;
+      const brandingSize = qrSize / 6; // Adjust size of branding text as needed
 
-    // Draw branding text
-    context.fillStyle = "#000000"; // Branding color
-    context.font = `${brandingSize / 2}px Arial`;
-    context.textAlign = "center";
-    context.textBaseline = "middle";
+      // Draw branding text
+      context.fillStyle = "#000000"; // Branding color
+      context.font = `${brandingSize / 2}px Arial`;
+      context.textAlign = "center";
+      context.textBaseline = "middle";
 
-    // Position the branding text in the center of the QR code
-    context.fillText("IdlePOS", qrSize / 2, qrSize / 2);
+      // Position the branding text in the center of the QR code
+      context.fillText("IdlePOS", qrSize / 2, qrSize / 2);
+    }
   }, 100);
 };
 
