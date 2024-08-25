@@ -32,6 +32,7 @@
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
+            margin: 5px;
         }
     </style>
 </head>
@@ -42,9 +43,12 @@
         <input type="text" id="logo-input" placeholder="Enter Logo URL here" />
         <button onclick="generateQRCode()">Generate QR Code</button>
         <div id="canvas"></div>
+        <button id="download-btn" style="display:none;">Download QR Code</button>
     </div>
     <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
     <script type="text/javascript">
+        let qrCode = null;
+
         function generateQRCode() {
             const url = document.getElementById('url-input').value;
             const logoUrl = document.getElementById('logo-input').value;
@@ -57,8 +61,8 @@
             const canvasContainer = document.getElementById('canvas');
             canvasContainer.innerHTML = '';
 
-          // Create a new QR code with a larger logo
-            const qrCode = new QRCodeStyling({
+            // Create a new QR code with a larger logo
+            qrCode = new QRCodeStyling({
                 width: 500,
                 height: 500,
                 type: "svg",
@@ -74,13 +78,23 @@
                 imageOptions: {
                     crossOrigin: "anonymous",
                     margin: 20,
-                    // Adjust the size of the logo
                     imageSize: 0.4 // Size of the logo as a percentage of QR code width
                 }
             });
+
             // Append the QR code to the canvas container
             qrCode.append(canvasContainer);
+
+            // Show the download button
+            document.getElementById('download-btn').style.display = 'inline';
         }
+
+        // Add event listener to download button
+        document.getElementById('download-btn').addEventListener('click', () => {
+            if (qrCode) {
+                qrCode.download({ name: "qr-code", extension: "png" });
+            }
+        });
     </script>
 </body>
 </html>
